@@ -2,11 +2,11 @@ package edutasks.kirillnsb;
 
 public class DateUtil {
 
-    boolean isLeapYear(int year) {
+    static boolean isLeapYear(int year) {
         return year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
     }
 
-    private int getMonthLength(int year, int month) {
+    static int getMonthLength(int year, int month) {
         int monthLength = 0;
         switch (month) {
             case 1:
@@ -34,14 +34,20 @@ public class DateUtil {
         return monthLength;
     }
 
-    boolean isValidDate(int year, int month, int day) {
+    static int getYearLength(int year){
+        if (isLeapYear(year))
+            return 366;
+        return 365;
+    }
+
+    static boolean isValidDate(int year, int month, int day) {
         int lastDay = getMonthLength(year, month);
         if (lastDay < day || day <= 0)
             return false;
         return year > 1582 || month > 10 || day >= 15;//Date out of Gregorian calendar(1582/10/15)
     }
 
-    int getDayOfWeek(int year, int month, int day) {
+    static int getDayOfWeek(int year, int month, int day) {
         if (month < 3) {
             year--;
             month += 10;
@@ -56,7 +62,7 @@ public class DateUtil {
         return result;
     }
 
-    private String getDayName(int id) {
+    private static String getDayName(int id) {
         String str = " ";
         switch (id) {
             case 0:
@@ -84,7 +90,7 @@ public class DateUtil {
         return str;
     }
 
-    private String getMonthName(int month) {
+    private static String getMonthName(int month) {
         String str = " ";
         switch (month) {
             case 1:
@@ -127,17 +133,17 @@ public class DateUtil {
         return str;
     }
 
-    public String toString(int year, int month, int day) {
+    public static String toString(int year, int month, int day) {
         return getDayName(getDayOfWeek(year, month, day)) + ", " + getMonthName(month) + " " + day + ", " + year;
     }
 
-    private int countRemainingDaysInMonth(int year, int month, int day) {
+    private static int countRemainingDaysInMonth(int year, int month, int day) {
         int count = getMonthLength(year, month) - day;
         count++;//including current day
         return count;
     }
 
-    private int countRemainingDaysInYear(int year, int month, int day) {
+    private static int countRemainingDaysInYear(int year, int month, int day) {
         int count = 0;
         for (; month <= 12; month++) {
             count += (countRemainingDaysInMonth(year, month, day));
@@ -146,9 +152,9 @@ public class DateUtil {
         return count;
     }
 
-    int countDays(int year, int month, int day) {
+    static int countDays(int year, int month, int day) {
         int count = 0;
-        CurrentDate cd = new CurrentDate(2020, 12, 31); //current date entry
+        CurrentDate cd = new CurrentDate(2020, 12, 31); //current day entry
         int daysPassed; //past days counter
         if (isLeapYear(cd.year)) {
             daysPassed = 366 - countRemainingDaysInYear(cd.year, cd.month, cd.day);
@@ -164,5 +170,6 @@ public class DateUtil {
         }
         count += daysPassed;
         return count;
+
     }
 }
