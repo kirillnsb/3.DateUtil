@@ -154,7 +154,7 @@ public class DateUtil {
 
     static int countDays(int year, int month, int day) {
         int count = 0;
-        CurrentDate cd = new CurrentDate(2020, 12, 31); //current day entry
+        CurrentDate cd = new CurrentDate(); //current day entry
         int daysPassed; //past days counter
         if (isLeapYear(cd.year)) {
             daysPassed = 366 - countRemainingDaysInYear(cd.year, cd.month, cd.day);
